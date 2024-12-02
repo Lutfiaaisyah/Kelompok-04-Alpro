@@ -79,3 +79,53 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = StudentProductivityToolkit(root)
     root.mainloop()
+
+
+
+
+
+class CalculatorFrame(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.pack(fill="both", expand=True, padx=10, pady=10)
+
+        ttk.Label(self, text="Kalkulator", font=("Arial", 16)).grid(row=0, column=0, columnspan=4, pady=10)
+
+        self.entry = ttk.Entry(self, font=("Arial", 14), justify="right")
+        self.entry.grid(row=1, column=0, columnspan=4, sticky="we", padx=5, pady=5)
+
+        buttons = [
+            ('7', 2, 0), ('8', 2, 1), ('9', 2, 2), ('/', 2, 3),
+            ('4', 3, 0), ('5', 3, 1), ('6', 3, 2), ('*', 3, 3),
+            ('1', 4, 0), ('2', 4, 1), ('3', 4, 2), ('-', 4, 3),
+            ('C', 5, 0), ('0', 5, 1), ('=', 5, 2), ('+', 5, 3),
+        ]
+
+        for (text, row, col) in buttons:
+            ttk.Button(self, text=text, command=lambda t=text: self.on_button_click(t)).grid(
+                row=row, column=col, padx=5, pady=5, sticky="nsew"
+            )
+
+        for i in range(6):
+            self.rowconfigure(i, weight=1)
+        for i in range(4):
+            self.columnconfigure(i, weight=1)
+
+    def on_button_click(self, char):
+        if char == "C":
+            self.entry.delete(0, tk.END)
+        elif char == "=":
+            try:
+                expression = self.entry.get()
+                result = eval(expression)
+                self.entry.delete(0, tk.END)
+                self.entry.insert(tk.END, str(result))
+            except Exception:
+                messagebox.showerror("Error", "Ekspresi tidak valid")
+        else:
+            self.entry.insert(tk.END, char)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = StudentProductivityToolkit(root)
+    root.mainloop()
